@@ -18,3 +18,5 @@ imageio-ffmpeg==0.4.3
 pyspng
 Ninja
 gradio
+huggingface_hub
+hf_transfer

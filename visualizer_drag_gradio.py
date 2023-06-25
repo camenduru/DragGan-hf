@@ -2,6 +2,8 @@ import os
 import os.path as osp
 from argparse import ArgumentParser
 from functools import partial
+from huggingface_hub import snapshot_download
+from pathlib import Path
 
 import gradio as gr
 import numpy as np
@@ -13,6 +15,11 @@ from gradio_utils import (ImageMask, draw_mask_on_image, draw_points_on_image,
                           get_latest_points_pair, get_valid_mask,
                           on_change_single_global_state)
 from viz.renderer import Renderer, add_watermark_np
+
+
+# download models from hub
+model_dir = Path('./checkpoints')
+snapshot_download('radames/DragGan', repo_type='model', local_dir=model_dir)
 
 parser = ArgumentParser()
 parser.add_argument('--share', action='store_true')
