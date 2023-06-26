@@ -1,3 +1,4 @@
+# https://huggingface.co/radames/DragGan
 import os
 import os.path as osp
 from argparse import ArgumentParser
@@ -177,6 +178,9 @@ with gr.Blocks() as app:
 # DragGAN - Drag Your GAN
 ## Interactive Point-based Manipulation on the Generative Image Manifold
 ### Unofficial Gradio Demo
+
+<a href="https://huggingface.co/spaces/radames/DragGan?duplicate=true" style="display: inline-block;margin-top: .5em;margin-right: .25em;" target="_blank">
+<img style="margin-bottom: 0em;display: inline;margin-top: -.25em;" src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a> for no queue on your own hardware.</p>
 
 * Official Repo: [XingangPan](https://github.com/XingangPan/DragGAN)
 * Gradio Demo by: [LeoXing1996](https://github.com/LeoXing1996) with [OpenMMLab MMagic](https://github.com/open-mmlab/mmagic)
