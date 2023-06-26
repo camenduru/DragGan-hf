@@ -2,7 +2,6 @@ import os
 import os.path as osp
 from argparse import ArgumentParser
 from functools import partial
-from huggingface_hub import snapshot_download
 from pathlib import Path
 
 import gradio as gr
@@ -17,7 +16,9 @@ from gradio_utils import (ImageMask, draw_mask_on_image, draw_points_on_image,
 from viz.renderer import Renderer, add_watermark_np
 
 
-# download models from hub
+# download models from Hugging Face hub
+from huggingface_hub import snapshot_download
+
 model_dir = Path('./checkpoints')
 snapshot_download('radames/DragGan', repo_type='model', local_dir=model_dir)
 
@@ -166,6 +167,14 @@ print(valid_checkpoints_dict)
 init_pkl = 'stylegan_human_v2_512'
 
 with gr.Blocks() as app:
+    gr.Markdown("""
+    # DragGAN - Drag Your GAN: Interactive Point-based Manipulation on the Generative Image Manifold
+    ## Unofficial Gradio Demo
+    <small>
+    * Official Repo: [XingangPan][https://github.com/XingangPan/DragGAN]
+    * Gradio Demo by: [LeoXing1996](https://github.com/LeoXing1996) with [OpenMMLab MMagic](https://github.com/open-mmlab/mmagic)
+    </small>
+    """)
 
     # renderer = Renderer()
     global_state = gr.State({
@@ -330,25 +339,11 @@ with gr.Blocks() as app:
           mask (this has the same effect as `Reset Image` button).
         3. Click `Edit Flexible Area` to create a mask and constrain the
            unmasked region to remain unchanged.
-        """)
-    gr.HTML("""
-        <style>
-            .container {
-                position: absolute;
-                height: 50px;
-                text-align: center;
-                line-height: 50px;
-                width: 100%;
-            }
-        </style>
-        <div class="container">
-        Gradio demo supported by
-        <img src="https://avatars.githubusercontent.com/u/10245193?s=200&v=4" height="20" width="20" style="display:inline;">
-        <a href="https://github.com/open-mmlab/mmagic">OpenMMLab MMagic</a>
-        </div>
-        """)
 
+        
+        """)
     # Network & latents tab listeners
+
     def on_change_pretrained_dropdown(pretrained_value, global_state):
         """Function to handle model change.
         1. Set pretrained value to global_state
@@ -869,5 +864,5 @@ with gr.Blocks() as app:
     )
 
 gr.close_all()
-app.queue(concurrency_count=5, max_size=20)
-app.launch(share=args.share)
+app.queue(concurrency_count=5, max_size=20, api_open=False)
+app.launch(show_api=False)

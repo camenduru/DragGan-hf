@@ -1,6 +1,6 @@
 ---
-title: DragGan
-emoji: 👀
+title: DragGan - Drag Your GAN
+emoji: 👆🐉
 colorFrom: purple
 colorTo: pink
 sdk: gradio
