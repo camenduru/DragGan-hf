@@ -30,6 +30,7 @@ args = parser.parse_args()
 cache_dir = args.cache_dir
 
 device = 'cuda'
+IS_SPACE = "radames/DragGan" in os.environ.get('SPACE_ID', '')
 
 
 def reverse_point_pairs(points):
@@ -154,17 +155,22 @@ def preprocess_mask_info(global_state, image):
     return global_state
 
 
+# filter large models running on SPACES
+if IS_SPACE:
+    blocked_checkpoints = ["stylegan_human_v2_512.pkl",
+                           "stylegan2_dogs_1024_pytorch.pkl"]
+else:
+    blocked_checkpoints = []
+
 valid_checkpoints_dict = {
-    f.split('/')[-1].split('.')[0]: osp.join(cache_dir, f)
-    for f in os.listdir(cache_dir)
-    if (f.endswith('pkl') and osp.exists(osp.join(cache_dir, f)))
+    f.name.split('.')[0]: str(f)
+    for f in Path(cache_dir).glob('*.pkl')
+    if f.name not in blocked_checkpoints
 }
-print(f'File under cache_dir ({cache_dir}):')
-print(os.listdir(cache_dir))
 print('Valid checkpoint file:')
 print(valid_checkpoints_dict)
 
-init_pkl = 'stylegan_human_v2_512'
+init_pkl = 'stylegan2_lions_512_pytorch'
 
 with gr.Blocks() as app:
     gr.Markdown("""
@@ -241,9 +247,13 @@ with gr.Blocks() as app:
                         gr.Markdown(value='Latent', show_label=False)
 
                     with gr.Column(scale=4, min_width=10):
-                        form_seed_number = gr.Number(
+                        form_seed_number = gr.Slider(
+                            mininium=0,
+                            maximum=2**32-1,
+                            step=1,
                             value=global_state.value['params']['seed'],
                             interactive=True,
+                            randomize=True,
                             label="Seed",
                         )
                         form_lr_number = gr.Number(
@@ -865,5 +875,5 @@ with gr.Blocks() as app:
 
 print("SHAReD: Start app", parser.parse_args())
 gr.close_all()
-app.queue(concurrency_count=2, max_size=20, api_open=False)
+app.queue(concurrency_count=5, max_size=20, api_open=False)
 app.launch(share=args.share, show_api=False)
