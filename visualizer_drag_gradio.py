@@ -168,13 +168,13 @@ init_pkl = 'stylegan_human_v2_512'
 
 with gr.Blocks() as app:
     gr.Markdown("""
-    # DragGAN - Drag Your GAN: Interactive Point-based Manipulation on the Generative Image Manifold
-    ## Unofficial Gradio Demo
-    <small>
-    * Official Repo: [XingangPan][https://github.com/XingangPan/DragGAN]
-    * Gradio Demo by: [LeoXing1996](https://github.com/LeoXing1996) with [OpenMMLab MMagic](https://github.com/open-mmlab/mmagic)
-    </small>
-    """)
+# DragGAN - Drag Your GAN
+## Interactive Point-based Manipulation on the Generative Image Manifold
+### Unofficial Gradio Demo
+
+* Official Repo: [XingangPan](https://github.com/XingangPan/DragGAN)
+* Gradio Demo by: [LeoXing1996](https://github.com/LeoXing1996) with [OpenMMLab MMagic](https://github.com/open-mmlab/mmagic)
+""")
 
     # renderer = Renderer()
     global_state = gr.State({
@@ -863,6 +863,7 @@ with gr.Blocks() as app:
         outputs=[global_state, form_image],
     )
 
+print("SHAReD: Start app", parser.parse_args())
 gr.close_all()
-app.queue(concurrency_count=5, max_size=20, api_open=False)
-app.launch(show_api=False)
+app.queue(concurrency_count=2, max_size=20, api_open=False)
+app.launch(share=args.share, show_api=False)

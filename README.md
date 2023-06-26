@@ -1,5 +1,5 @@
 ---
-title: DragGan - Drag Your GAN
+title: DragGan - Drag Your GAN 
 emoji: 👆🐉
 colorFrom: purple
 colorTo: pink
